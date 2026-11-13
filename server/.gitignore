@@ -1,0 +1,20 @@
+# ==============================================================================
+# BREWLY SERVER LOCAL REFERENCE:
+# Admin credentials are configured in server/.env:
+#   ADMIN_USER=admin
+#   ADMIN_PASS=brewly123
+# Run `npm run seed:admin` to update or re-hash admin credentials into MongoDB.
+# Stripe test card for sandbox checkout: 4242 4242 4242 4242 (Any future exp, CVC: 123)
+# ==============================================================================
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# Node modules
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*

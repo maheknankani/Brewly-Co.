@@ -1,0 +1,54 @@
+# ==============================================================================
+# BREWLY LOCAL TESTING & CREDENTIALS QUICK REFERENCE
+# ==============================================================================
+#
+# 🔐 ADMIN DASHBOARD LOGIN:
+#   URL: http://localhost:5173 (Click Shield Icon)
+#   Username: admin (or admin@brewly.com)
+#   Password: Set in server/.env -> ADMIN_PASS (Default local test: brewly123)
+#   To reset/seed: cd server && npm run seed:admin
+#
+# 💳 STRIPE TEST PAYMENT CARDS (SANDBOX SAFE):
+#   Card Number: 4242 4242 4242 4242
+#   Expiration:  Any future month/year (e.g. 12/28)
+#   CVC:         Any 3 digits (e.g. 123)
+#   Postal Code: Any 5 digits (e.g. 10001 or 90210)
+#
+# (This .gitignore prevents your private keys and .env from being committed to git)
+# ==============================================================================
+
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.env
+server/.env
+!server/.env.example
+*credentials*.local*
+
+# Build Outputs
+dist/
+client/dist/
+build/
+client/build/
+
+# Logs & Debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

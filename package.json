@@ -1,0 +1,17 @@
+{
+  "name": "brewly-coffee-platform",
+  "version": "1.0.0",
+  "description": "Brewly — Premium Coffee Commerce Platform",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "node server/server.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

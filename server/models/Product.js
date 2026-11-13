@@ -1,0 +1,42 @@
+const mongoose = require('mongoose');
+
+const ProductSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  slug: { type: String, required: true },
+  tagline: { type: String },
+  subtitle: { type: String },
+  description: { type: String, required: true },
+  shortDescription: { type: String, required: true },
+  origin: { type: String, required: true },
+  region: { type: String },
+  farm: { type: String },
+  altitude: { type: String },
+  processingMethod: { type: String, required: true },
+  roastLevel: { type: String, required: true },
+  roastCategory: { type: String },
+  roastScore: { type: Number, default: 3 },
+  flavorNotes: [{ type: String }],
+  aroma: { type: String },
+  acidity: { type: String, required: true },
+  body: { type: String, required: true },
+  sweetness: { type: String, required: true },
+  price: { type: Number, required: true },
+  discountPrice: { type: Number },
+  subscriptionPrice: { type: Number },
+  images: [{ type: String }],
+  bagImage: { type: String },
+  cupImage: { type: String },
+  weightOptions: [{ type: String }],
+  grindOptions: [{ type: String }],
+  brewingMethods: [{ type: String }],
+  stock: { type: Number, default: 50 },
+  rating: { type: Number, default: 4.8 },
+  reviewCount: { type: Number, default: 42 },
+  isFeatured: { type: Boolean, default: false },
+  badge: { type: String },
+  category: { type: String, required: true },
+  roastDate: { type: String }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Product', ProductSchema);
