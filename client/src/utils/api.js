@@ -1,5 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL || '/api';
-
+// const BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const BASE_URL = `${(import.meta.env.VITE_API_URL || '').replace(/\/$/, '')}/api`;
 const handleResponse = async (res) => {
   const contentType = res.headers.get('content-type');
   if (contentType && contentType.includes('application/json')) {
