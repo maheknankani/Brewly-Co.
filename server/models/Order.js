@@ -20,6 +20,7 @@ const OrderSchema = new mongoose.Schema({
   shipping: { type: Number },
   total: { type: Number },
   status: { type: String, default: 'Processing' },
+  confirmationEmailSent: { type: Boolean, default: false },
   trackingSteps: [
     {
       step: { type: String },

@@ -433,58 +433,69 @@ export const AdminDashboard = () => {
   }
 
   return (
-    <div className="py-8 bg-cream-100 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="py-4 sm:py-8 bg-cream-100 min-h-screen">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-4 sm:space-y-8">
         
-        {/* Admin Title Header & Profile Badge */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-espresso-900 text-cream-100 p-6 rounded-3xl shadow-lg border border-espresso-800">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="text-xs uppercase font-mono tracking-widest text-amberGold-400 font-bold block">BREWLY ROASTERY MANAGEMENT SUITE</span>
-              <span className="bg-forest-700/80 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-forest-600 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>AUTHENTICATED ADMIN</span>
-              </span>
-            </div>
-            <h1 className="text-3xl font-serif font-bold text-cream-100">Specialty Coffee Control Center</h1>
-            <p className="text-xs text-cream-200/70">
-              Authenticated as <strong className="text-amberGold-400">{adminUser?.name || 'Head Roaster Admin'}</strong> ({adminUser?.email || 'admin@brewly.com'}) — Role: <span className="text-cream-100 font-semibold">{adminUser?.role || 'admin'}</span>
-            </p>
+        {/* Admin Title Header & Profile Badge — mobile-optimised */}
+        <div className="bg-espresso-900 text-cream-100 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-lg border border-espresso-800">
+
+          {/* Top row: label + badge */}
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <span className="text-[9px] sm:text-xs uppercase font-mono tracking-widest text-amberGold-400 font-bold leading-tight">
+              BREWLY ROASTERY SUITE
+            </span>
+            <span className="bg-forest-700/80 text-emerald-300 text-[9px] font-bold px-2 py-0.5 rounded-full border border-forest-600 flex items-center gap-1 shrink-0">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>AUTHENTICATED</span>
+            </span>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          {/* Heading */}
+          <h1 className="text-xl sm:text-3xl font-serif font-bold text-cream-100 leading-tight">
+            Coffee Control Center
+          </h1>
+
+          {/* Auth info — compact on mobile */}
+          <p className="text-[10px] sm:text-xs text-cream-200/60 mt-1">
+            <strong className="text-amberGold-400">{adminUser?.name || 'Head Roaster Admin'}</strong>
+            <span className="hidden sm:inline"> · {adminUser?.email || 'admin@brewly.com'}</span>
+            {' '}· Role: <span className="text-cream-100 font-semibold">{adminUser?.role || 'admin'}</span>
+          </p>
+
+          {/* Action buttons — side by side on all sizes */}
+          <div className="flex gap-2 mt-4">
             <button
               onClick={handleOpenAddModal}
-              className="bg-forest-700 hover:bg-forest-800 text-cream-100 px-4 py-2.5 rounded-xl text-xs font-semibold shadow-md flex items-center gap-1.5 transition-colors"
+              className="flex-1 sm:flex-none bg-forest-700 hover:bg-forest-800 text-cream-100 px-3 sm:px-4 py-2.5 rounded-xl text-xs font-semibold shadow-md flex items-center justify-center gap-1.5 transition-colors"
             >
-              <Plus size={16} />
-              <span>Add Coffee Product</span>
+              <Plus size={15} />
+              <span>Add Product</span>
             </button>
             <button
               onClick={adminLogout}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 transition-all border border-red-500/40 hover:scale-105 active:scale-95 cursor-pointer"
+              className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-2.5 rounded-xl text-xs font-bold shadow-md flex items-center justify-center gap-1.5 transition-all border border-red-500/40 cursor-pointer"
               title="Logout Admin Session"
             >
-              <LogOut size={16} />
-              <span>Logout Admin</span>
+              <LogOut size={15} />
+              <span>Logout</span>
             </button>
           </div>
         </div>
 
-        {/* Dashboard Navigation Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-cream-300">
+        {/* Dashboard Navigation Tabs — horizontal scroll on mobile */}
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-none border-b border-cream-300">
           {[
-            { id: 'products', label: `Products Management (${products.length})`, icon: <Package size={16} /> },
-            { id: 'analytics', label: 'Sales Analytics', icon: <LayoutDashboard size={16} /> },
-            { id: 'orders', label: `Customer Orders (${orders.length})`, icon: <ShoppingCart size={16} /> },
-            { id: 'inventory', label: `Stock & Inventory (${lowStockProducts.length} low)`, icon: <AlertTriangle size={16} /> },
-            { id: 'subscriptions', label: `Subscribers (${subscriptions.length})`, icon: <RefreshCw size={16} /> },
-            { id: 'discounts', label: 'Coupons & Promos', icon: <Tag size={16} /> }
+            { id: 'products', label: `Products (${products.length})`, icon: <Package size={14} /> },
+            { id: 'analytics', label: 'Analytics', icon: <LayoutDashboard size={14} /> },
+            { id: 'orders', label: `Orders (${orders.length})`, icon: <ShoppingCart size={14} /> },
+            { id: 'inventory', label: `Stock (${lowStockProducts.length} low)`, icon: <AlertTriangle size={14} /> },
+            { id: 'subscriptions', label: `Subs (${subscriptions.length})`, icon: <RefreshCw size={14} /> },
+            { id: 'discounts', label: 'Promos', icon: <Tag size={14} /> }
           ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-xs font-semibold transition-all whitespace-nowrap shrink-0 ${
                 activeTab === tab.id
                   ? 'bg-espresso-900 text-amberGold-400 shadow'
                   : 'bg-cream-200 text-espresso-900 hover:bg-cream-300'

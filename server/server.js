@@ -375,12 +375,19 @@ app.post('/api/orders', async (req, res) => {
       await notif.save().catch(e => console.warn('Notification save note:', e.message));
     }
 
-    // 4. Dispatch real SMTP email in background
-    sendOrderConfirmationEmail(newOrder).catch(err => {
-      console.error('Failed to dispatch order confirmation email:', err.message);
-    });
+    // 4. Dispatch real SMTP email — await so we can report success/failure
+    let emailSent = false;
+    let emailError = null;
+    try {
+      await sendOrderConfirmationEmail(newOrder);
+      emailSent = true;
+      console.log(`✅ Order confirmation email sent for #${newOrder.id} to ${newOrder.customerEmail}`);
+    } catch (err) {
+      emailError = err.message;
+      console.error('❌ Failed to dispatch order confirmation email:', err.message);
+    }
 
-    res.status(201).json({ success: true, order: newOrder });
+    res.status(201).json({ success: true, order: newOrder, emailSent, emailError });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -1414,9 +1421,22 @@ app.post('/api/verify-checkout-session', async (req, res) => {
     // 1. Prevent duplicate orders for the same Stripe checkout session
     let existingOrder = await Order.findOne({ stripePaymentId: sessionId });
     if (existingOrder) {
+      let emailSent = existingOrder.confirmationEmailSent;
+      if (!emailSent) {
+        try {
+          await sendOrderConfirmationEmail(existingOrder);
+          existingOrder.confirmationEmailSent = true;
+          await existingOrder.save();
+          emailSent = true;
+        } catch (err) {
+          console.error(`Failed to dispatch order confirmation email for Order #${existingOrder.id}:`, err.message);
+        }
+      }
+
       return res.json({
         success: true,
         order: existingOrder,
+        emailSent,
         message: 'Order already verified and confirmed'
       });
     }
@@ -1431,7 +1451,7 @@ app.post('/api/verify-checkout-session', async (req, res) => {
     if (stripe && sessionId.startsWith('cs_')) {
       try {
         session = await stripe.checkout.sessions.retrieve(sessionId, {
-          expand: ['line_items', 'customer_details']
+          expand: ['line_items']
         });
         paymentConfirmed = session.payment_status === 'paid';
         customerDetails = session.customer_details || {};
@@ -1447,12 +1467,16 @@ app.post('/api/verify-checkout-session', async (req, res) => {
           }));
         }
       } catch (stripeErr) {
-        console.warn('Stripe Session Retrieval Note:', stripeErr.message);
+        console.error('Failed to retrieve Stripe Checkout Session:', stripeErr);
+        return res.status(502).json({
+          success: false,
+          message: 'Unable to verify your Stripe payment. Please try again or contact support.'
+        });
       }
     }
 
     // Allow simulated test sessions in local development environments
-    if (!paymentConfirmed && (sessionId.startsWith('cs_') || sessionId.startsWith('sim_'))) {
+    if (!paymentConfirmed && process.env.NODE_ENV !== 'production' && sessionId.startsWith('sim_')) {
       paymentConfirmed = true;
     }
 
@@ -1478,7 +1502,13 @@ app.post('/api/verify-checkout-session', async (req, res) => {
       }
     }
 
-    const email = customerDetails.email || customerEmail || (session && session.customer_email) || 'customer@brewly.com';
+    const email = customerDetails.email || (session && session.customer_email) || customerEmail;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'A customer email address is required to confirm this order.'
+      });
+    }
     const name = metadata.customerName || customerDetails.name || 'Valued Customer';
     const phone = metadata.customerPhone || customerDetails.phone || '+1 555-0192';
     const orderId = 'BRW-' + Math.floor(1000 + Math.random() * 9000);
@@ -1554,14 +1584,21 @@ app.post('/api/verify-checkout-session', async (req, res) => {
       await notif.save().catch(e => console.warn('Notification save note:', e.message));
     }
 
-    // 5. Dispatch real SMTP confirmation email
-    sendOrderConfirmationEmail(newOrder).catch(err => {
-      console.error('Failed to dispatch order confirmation email:', err.message);
-    });
+    // 5. Dispatch the SMTP confirmation email before reporting its status
+    let emailSent = false;
+    try {
+      await sendOrderConfirmationEmail(newOrder);
+      newOrder.confirmationEmailSent = true;
+      await newOrder.save();
+      emailSent = true;
+    } catch (err) {
+      console.error(`Failed to dispatch order confirmation email for Order #${newOrder.id}:`, err.message);
+    }
 
     res.json({
       success: true,
       message: 'Stripe payment verified successfully! Order created.',
+      emailSent,
       order: newOrder
     });
   } catch (err) {

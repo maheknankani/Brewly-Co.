@@ -108,7 +108,7 @@ export const HeroSection = () => {
             </div>
 
             {/* Coffee Bag & Cup Display with Dynamic Image Swap */}
-            <div className="relative bg-cream-100 rounded-2xl p-6 border border-cream-300 flex items-center justify-center min-h-[260px] overflow-hidden group shadow-inner">
+            <div className="relative bg-cream-100 rounded-2xl p-6 border border-cream-300 flex items-center justify-center min-h-[200px] sm:min-h-[260px] overflow-hidden group shadow-inner">
               <img
                 key={activeProduct.id}
                 src={activeProduct.bagImage}

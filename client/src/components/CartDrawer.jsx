@@ -76,7 +76,7 @@ export const CartDrawer = () => {
       ></div>
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
-        <div className="w-screen max-w-md bg-cream-100 shadow-2xl flex flex-col justify-between border-l border-cream-300">
+        <div className="w-screen sm:max-w-md bg-cream-100 shadow-2xl flex flex-col justify-between border-l border-cream-300">
           
           {/* Header */}
           <div className="p-6 border-b border-cream-300 flex items-center justify-between bg-cream-200/50">

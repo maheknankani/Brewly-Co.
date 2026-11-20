@@ -53,7 +53,7 @@ export const CheckoutPage = () => {
       api.verifyCheckoutSession({ sessionId })
         .then(res => {
           if (res.success && res.order) {
-            setCompletedOrder(res.order);
+            setCompletedOrder({ ...res.order, confirmationEmailSent: res.emailSent });
             setTrackedOrder(res.order);
             addOrderToHistory(res.order);
             if (res.order.customerEmail) {
@@ -66,14 +66,16 @@ export const CheckoutPage = () => {
               spread: 80,
               origin: { y: 0.6 }
             });
-            showToast('💳 Stripe Payment Verified! Order successfully placed.');
+            showToast(res.emailSent
+              ? '💳 Stripe payment verified! Order confirmation email sent.'
+              : '💳 Stripe payment verified! The order confirmation email could not be sent.');
           } else {
-            showToast(res.message || 'Payment received! Order confirmed.');
+            showToast(res.message || 'Unable to verify your Stripe payment. Please try again or contact support.');
           }
         })
         .catch(err => {
           console.error('Session verify error:', err);
-          showToast('Payment verified.');
+          showToast(err.message || 'Unable to verify your Stripe payment. Please try again or contact support.');
         })
         .finally(() => {
           setIsProcessing(false);
@@ -149,7 +151,10 @@ export const CheckoutPage = () => {
           origin: { y: 0.6 }
         });
 
-        showToast(paymentMethod === 'online' ? '💳 Stripe Payment Authorized! Order confirmed.' : '🎉 Order placed! SMS & Email confirmations dispatched.');
+        const emailMsg = res.emailSent
+          ? `🎉 COD Order confirmed! Confirmation email sent to ${form.email}`
+          : `🎉 COD Order placed! (Email delivery pending — check SMTP config)`;
+        showToast(emailMsg);
       }
     } catch (err) {
       console.error('Checkout error:', err);
@@ -216,13 +221,19 @@ export const CheckoutPage = () => {
             <div className="bg-cream-100 border border-cream-300 rounded-2xl p-3.5 space-y-1 shadow-sm">
               <div className="flex items-center gap-1.5 font-bold text-xs text-forest-700">
                 <Mail size={14} />
-                <span>Email Confirmation Sent</span>
+                <span>
+                  {completedOrder.stripePaymentId && !completedOrder.confirmationEmailSent
+                    ? 'Email Confirmation Pending'
+                    : 'Email Confirmation Sent'}
+                </span>
               </div>
               <p className="text-[10px] text-espresso-900/70 truncate">
                 {completedOrder.customerEmail}
               </p>
               <div className="text-[10px] bg-forest-700/10 text-forest-800 p-1.5 rounded font-mono mt-1">
-                Receipt & details dispatched
+                {completedOrder.stripePaymentId && !completedOrder.confirmationEmailSent
+                  ? 'Order saved; email delivery failed'
+                  : 'Receipt & details dispatched'}
               </div>
             </div>
 
@@ -377,7 +388,7 @@ export const CheckoutPage = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-espresso-900 mb-1">City</label>
                   <input
@@ -523,10 +534,10 @@ export const CheckoutPage = () => {
             >
               <span>
                 {isProcessing
-                  ? 'Launching Stripe Checkout...'
+                  ? (paymentMethod === 'cash' ? 'Placing Your Order...' : 'Launching Stripe Checkout...')
                   : paymentMethod === 'cash'
-                  ? `Complete Order (Cash on Delivery) — $${grandTotal.toFixed(2)}`
-                  : `Pay on Official Stripe Hosted Sandbox Checkout — $${grandTotal.toFixed(2)} ↗`}
+                  ? `Complete Order — Cash on Delivery — $${grandTotal.toFixed(2)}`
+                  : `Pay on Stripe Checkout — $${grandTotal.toFixed(2)} ↗`}
               </span>
               <ArrowRight size={16} />
             </button>

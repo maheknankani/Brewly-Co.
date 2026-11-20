@@ -24,7 +24,7 @@ const connectDB = async () => {
 
   if (primaryUri) {
     try {
-      await mongoose.connect(primaryUri, { serverSelectionTimeoutMS: 5000 });
+      await mongoose.connect(primaryUri, { serverSelectionTimeoutMS: 10000 });
       console.log(`🍃 Connected to Primary MongoDB (${mongoose.connection.host})`);
       await seedInitialData();
       return;
@@ -46,10 +46,15 @@ const connectDB = async () => {
 
 const seedInitialData = async () => {
   try {
-    // Clear old products to ensure clean 18 specialty product collection
-    await Product.deleteMany({});
-    await Product.insertMany(initialProducts);
-    console.log('🌱 Seeded 24 Realistic Specialty Coffee Products into Database');
+    // Seed products only when database is empty
+const productCount = await Product.countDocuments();
+
+if (productCount === 0) {
+  await Product.insertMany(initialProducts);
+  console.log('🌱 Initial coffee products added successfully');
+} else {
+  console.log('✅ Existing products preserved');
+}
 
     const orderCount = await Order.countDocuments();
     if (orderCount === 0) {

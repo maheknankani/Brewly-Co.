@@ -40,7 +40,7 @@ export const Shop = () => {
         </div>
 
         {/* Filter & Search Bar Controls */}
-        <div className="bg-cream-200/60 border border-cream-300 rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+        <div className="bg-cream-200/60 border border-cream-300 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
           
           {/* Search Box */}
           <div className="relative w-full md:w-72">
@@ -92,7 +92,7 @@ export const Shop = () => {
         </div>
 
         {/* Coffee Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
           {filtered.map(product => {
             const isFav = wishlist.includes(product.id);
 
