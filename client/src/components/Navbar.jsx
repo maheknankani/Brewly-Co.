@@ -84,18 +84,19 @@ export const Navbar = () => {
     }`}>
 
       {/* ── PROMOTIONAL STRIP ── */}
-      <div className="bg-espresso-900 px-3 flex items-center justify-center">
+      <div className="bg-espresso-900 px-3 flex items-center justify-center overflow-hidden">
 
         {/* MOBILE: single plain text line — no box, no wrapping */}
         <p
-          className="sm:hidden py-1 text-[10px] text-cream-200/90 font-sans text-center whitespace-nowrap overflow-hidden text-ellipsis w-full cursor-pointer"
+          className="sm:hidden py-1.5 text-[10px] text-cream-200/90 font-sans text-center truncate w-full max-w-full cursor-pointer leading-tight"
           onClick={() => {
             navigator.clipboard?.writeText(currentPromo.code);
             showToast?.(`Code ${currentPromo.code} copied! 📋`);
           }}
         >
           <span className="text-amberGold-400 font-bold font-mono">{currentPromo.code}</span>
-          <span className="text-cream-200/60"> · {currentPromo.discountPercent}% OFF · tap to copy</span>
+          <span className="text-cream-200/70"> ({currentPromo.discountPercent}% OFF)</span>
+          <span className="text-cream-200/40"> · tap to copy</span>
         </p>
 
         {/* DESKTOP (sm+): pill button layout */}

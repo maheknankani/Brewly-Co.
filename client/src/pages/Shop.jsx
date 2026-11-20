@@ -31,7 +31,7 @@ export const Shop = () => {
           <span className="text-xs uppercase tracking-widest font-bold text-amberGold-600 block mb-1">
             EXPLORE THE FULL CATALOG
           </span>
-          <h1 className="text-4xl font-serif font-bold text-espresso-900">
+          <h1 className="text-3xl sm:text-4xl font-serif font-bold text-espresso-900">
             Artisan Coffee Collection
           </h1>
           <p className="text-sm text-espresso-900/70 mt-2">
@@ -55,7 +55,7 @@ export const Shop = () => {
           </div>
 
           {/* Roast Category Filter */}
-          <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none w-full md:w-auto pb-0.5">
             <span className="text-xs font-bold text-espresso-900 shrink-0 flex items-center gap-1">
               <Filter size={14} /> Roast:
             </span>

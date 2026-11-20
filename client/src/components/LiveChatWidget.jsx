@@ -87,7 +87,7 @@ export const LiveChatWidget = () => {
     return (
       <button
         onClick={() => setIsChatOpen(true)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-espresso-900 hover:bg-forest-700 text-cream-100 p-3 sm:px-5 sm:py-3 rounded-full shadow-2xl border border-amberGold-500/50 flex items-center gap-2 sm:gap-3 transition-all duration-300 hover:scale-105 group cursor-pointer"
+        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-50 bg-espresso-900 hover:bg-forest-700 text-cream-100 p-3 sm:px-5 sm:py-3 rounded-full shadow-2xl border border-amberGold-500/50 flex items-center gap-2 sm:gap-3 transition-all duration-300 hover:scale-105 group cursor-pointer"
         title="Open Barista AI Live Chat"
       >
         <div className="relative">

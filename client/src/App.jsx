@@ -87,7 +87,7 @@ const AppContent = () => {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-24 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-auto z-50 bg-espresso-900 text-cream-100 border border-amberGold-500/40 px-5 py-3 rounded-2xl shadow-2xl text-xs font-semibold flex items-center gap-2 animate-bounce max-w-xs">
+        <div className="fixed bottom-28 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-auto z-50 bg-espresso-900 text-cream-100 border border-amberGold-500/40 px-5 py-3 rounded-2xl shadow-2xl text-xs font-semibold flex items-center gap-2 animate-bounce max-w-xs">
           <span>☕</span>
           <span className="break-words">{toastMessage}</span>
         </div>

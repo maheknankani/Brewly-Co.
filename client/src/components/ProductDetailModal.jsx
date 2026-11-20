@@ -124,12 +124,12 @@ export const ProductDetailModal = () => {
         </div>
 
         {/* Scrollable Content Body */}
-        <div className="overflow-y-auto p-6 sm:p-8 space-y-8 flex-1">
+        <div className="overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 flex-1 pb-20 sm:pb-6 md:pb-8">
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             
             {/* Left Column: Image Gallery */}
-            <div className="md:col-span-5 bg-cream-200/70 border border-cream-300 rounded-2xl p-6 flex flex-col items-center justify-between relative space-y-4">
+            <div className="md:col-span-5 bg-cream-200/70 border border-cream-300 rounded-2xl p-3 sm:p-6 flex flex-col items-center justify-between relative space-y-3 sm:space-y-4">
               {selectedProductDetail.badge && (
                 <span className="absolute top-3 left-3 bg-forest-700 text-cream-100 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full z-10">
                   {selectedProductDetail.badge}
@@ -140,7 +140,7 @@ export const ProductDetailModal = () => {
                 <img
                   src={imagesList[activeImageIndex] || selectedProductDetail.bagImage}
                   alt={selectedProductDetail.name}
-                  className="w-52 h-64 object-cover rounded-xl shadow-lg border border-cream-300 animate-float"
+                  className="w-36 h-44 sm:w-52 sm:h-64 object-cover rounded-xl shadow-lg border border-cream-300 animate-float"
                 />
               </div>
 
